@@ -1,5 +1,8 @@
 package meugeninua.webviewoverlay;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationChannelCompat;
 import androidx.core.app.NotificationChannelGroupCompat;
@@ -9,7 +12,9 @@ import androidx.core.app.NotificationManagerCompat;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 
 import org.pcc.webviewOverlay.WebViewOverlay;
 
@@ -18,11 +23,41 @@ public class MainActivity extends AppCompatActivity {
     private static final String GROUP_ID = "webview_overlay";
     private static final String CHANNEL_ID = "webview_overlay_notification";
 
+    private ActivityResultLauncher<Intent> launcher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        findViewById(R.id.button).setOnClickListener(
+            v -> onRequestPermission()
+        );
+        launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            this::onPermissionRequested
+        );
+    }
+
+    private void onPermissionRequested(ActivityResult activityResult) {
+        if (Settings.canDrawOverlays(this)) {
+            setupNotification();
+        }
+    }
+
+    private void onRequestPermission() {
+        if (Settings.canDrawOverlays(this)) {
+            setupNotification();
+        } else {
+            Intent intent = new Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName())
+            );
+            launcher.launch(intent);
+        }
+    }
+
+    private void setupNotification() {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         createChannelIfNeeded(manager);
 
