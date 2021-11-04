@@ -3,6 +3,7 @@ package meugeninua.webviewoverlay;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +24,8 @@ public class OverlayReceiver extends BroadcastReceiver {
         View view = inflater.inflate(R.layout.webview, null);
         WebView webView = view.findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("https://ptyagicodecamp.github.io");
+        webView.setBackgroundColor(Color.TRANSPARENT);
+        webView.loadUrl("https://6183b6075d678.htmlsave.net/");
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
             context.getResources().getDimensionPixelSize(R.dimen.webview_width),
             context.getResources().getDimensionPixelSize(R.dimen.webview_height),

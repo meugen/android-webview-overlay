@@ -2,12 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@android:color/transparent">
 
     <WebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"/>
 
     <ImageButton
             android:id="@+id/close_button"
@@ -15,6 +17,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_close_black_24"
             android:layout_gravity="top|end"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp" />
 
 </FrameLayout>
