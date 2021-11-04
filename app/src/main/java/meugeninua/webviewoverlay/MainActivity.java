@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.EditText;
 
 import org.pcc.webviewOverlay.WebViewOverlay;
 
@@ -61,9 +62,15 @@ public class MainActivity extends AppCompatActivity {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         createChannelIfNeeded(manager);
 
+        EditText urlEditText = findViewById(R.id.etUrl);
+        CharSequence url = urlEditText.getText();
+
         Intent intent = new Intent(this, OverlayReceiver.class);
+        if (url != null) {
+            intent.putExtra(OverlayReceiver.EXTRA_URL, url.toString().trim());
+        }
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-            this, 0, intent, 0
+            this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.outline_layers_black_18)

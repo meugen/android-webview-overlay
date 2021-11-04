@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import org.pcc.webviewOverlay.WebViewOverlay;
 
 public class OverlayReceiver extends BroadcastReceiver {
 
+    public static final String EXTRA_URL = "url";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -25,7 +28,11 @@ public class OverlayReceiver extends BroadcastReceiver {
         WebView webView = view.findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setBackgroundColor(Color.TRANSPARENT);
-        webView.loadUrl("https://6183b6075d678.htmlsave.net/");
+        String url = intent.getStringExtra(EXTRA_URL);
+        if (TextUtils.isEmpty(url)) {
+            url = "https://6183b6075d678.htmlsave.net/";
+        }
+        webView.loadUrl(url);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
             context.getResources().getDimensionPixelSize(R.dimen.webview_width),
             context.getResources().getDimensionPixelSize(R.dimen.webview_height),
