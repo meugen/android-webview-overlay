@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,10 @@ public class OverlayReceiver extends BroadcastReceiver {
             url = "https://6183b6075d678.htmlsave.net/";
         }
         webView.loadUrl(url);
+        DisplayMetrics metrics = getDisplayMetrics(windowManager);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-            context.getResources().getDimensionPixelSize(R.dimen.webview_width),
-            context.getResources().getDimensionPixelSize(R.dimen.webview_height),
+            Math.max(metrics.heightPixels, metrics.widthPixels) * 9 / 10,
+            Math.min(metrics.heightPixels, metrics.widthPixels) * 9 / 10,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
             PixelFormat.TRANSLUCENT
@@ -43,6 +45,12 @@ public class OverlayReceiver extends BroadcastReceiver {
         ImageButton closeButton = view.findViewById(R.id.close_button);
         closeButton.setOnClickListener(new RemoveViewClickListener(view));
         windowManager.addView(view, params);
+    }
+
+    private DisplayMetrics getDisplayMetrics(WindowManager manager) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        manager.getDefaultDisplay().getMetrics(metrics);
+        return metrics;
     }
 
     private static class RemoveViewClickListener implements View.OnClickListener {
