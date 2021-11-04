@@ -10,7 +10,7 @@ public class OverlayReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        WebViewOverlay overlay = new WebViewOverlay(Hack.context);
+        WebViewOverlay overlay = new WebViewOverlay(context);
         overlay.loadWebViewOverlay("https://ptyagicodecamp.github.io", null);
     }
 }

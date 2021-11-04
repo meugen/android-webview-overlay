@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Hack.context = this;
 
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         createChannelIfNeeded(manager);
