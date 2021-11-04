@@ -14,7 +14,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/button"
+            app:layout_constraintBottom_toTopOf="@id/seekBar"
             android:hint="URL for WebView (defaults to https://6183b6075d678.htmlsave.net/)">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -24,6 +24,26 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/alphaPercentLabel"
+            app:layout_constraintTop_toBottomOf="@id/tilUrl"
+            app:layout_constraintBottom_toTopOf="@id/button"
+            android:layout_marginEnd="16dp"
+            android:max="100" />
+
+    <TextView
+            android:id="@+id/alphaPercentLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/seekBar"
+            app:layout_constraintBottom_toBottomOf="@id/seekBar"
+            tools:text="0%"/>
+
     <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
@@ -32,6 +52,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilUrl" />
+            app:layout_constraintTop_toBottomOf="@id/seekBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

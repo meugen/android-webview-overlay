@@ -16,29 +16,49 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.EditText;
+import android.widget.SeekBar;
 
 import org.pcc.webviewOverlay.WebViewOverlay;
 
-public class MainActivity extends AppCompatActivity {
+import meugeninua.webviewoverlay.databinding.ActivityMainBinding;
+
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     private static final String GROUP_ID = "webview_overlay";
     private static final String CHANNEL_ID = "webview_overlay_notification";
 
+    private ActivityMainBinding binding;
     private ActivityResultLauncher<Intent> launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        findViewById(R.id.button).setOnClickListener(
+        binding.button.setOnClickListener(
             v -> onRequestPermission()
         );
+        binding.seekBar.setOnSeekBarChangeListener(this);
+        binding.alphaPercentLabel.setText("" + getAlphaPercent() + "%");
         launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             this::onPermissionRequested
         );
     }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        binding.alphaPercentLabel.setText(
+            "" + getAlphaPercent() + "%"
+        );
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) { }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) { }
 
     private void onPermissionRequested(ActivityResult activityResult) {
         if (Settings.canDrawOverlays(this)) {
@@ -58,17 +78,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private int getAlphaPercent() {
+        return binding.seekBar.getProgress() * 100 / binding.seekBar.getMax();
+    }
+
     private void setupNotification() {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         createChannelIfNeeded(manager);
 
-        EditText urlEditText = findViewById(R.id.etUrl);
-        CharSequence url = urlEditText.getText();
+        CharSequence url = binding.etUrl.getText();
 
         Intent intent = new Intent(this, OverlayReceiver.class);
         if (url != null) {
             intent.putExtra(OverlayReceiver.EXTRA_URL, url.toString().trim());
         }
+        intent.putExtra(OverlayReceiver.EXTRA_ALPHA_PERCENT, 100 - getAlphaPercent());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
             this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
