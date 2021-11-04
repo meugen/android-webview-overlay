@@ -31,7 +31,9 @@ public class OverlayReceiver extends BroadcastReceiver {
         Log.d("OverlayReceiver", "windowManager = " + windowManager);
         LayoutInflater inflater = LayoutInflater.from(context);
         WebviewBinding binding = WebviewBinding.inflate(inflater);
-        binding.container.setBackground(buildContainerBackground(intent));
+        binding.webview.setAlpha(
+            intent.getIntExtra(EXTRA_ALPHA_PERCENT, 0) / 100f
+        );
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.setBackgroundColor(Color.TRANSPARENT);
         String url = intent.getStringExtra(EXTRA_URL);
